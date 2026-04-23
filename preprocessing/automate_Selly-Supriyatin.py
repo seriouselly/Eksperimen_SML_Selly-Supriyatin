@@ -5,8 +5,8 @@ from sklearn.model_selection import train_test_split
 import joblib
 import os
 
-def run_preprocessing(raw_data_path='/StudentsPerformance_raw',
-                      output_dir='./StudentsPerformance_processing'):
+def run_preprocessing(raw_data_path='StudentsPerformance_raw/StudentsPerformance.csv',
+                      output_dir='StudentsPerformance_processing'):
     # Baca data
     df = pd.read_csv(raw_data_path)
     
