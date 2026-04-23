@@ -2,9 +2,8 @@ name: Preprocessing Pipeline
 
 on:
   push:
-    paths:
-      - "StudentsPerformance_raw/**"
-      - "preprocessing/automate_Selly-Supriyatin.py"
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
