@@ -1,0 +1,36 @@
+name: Preprocessing Data Otomatis
+
+# Robot akan menyala otomatis (trigger) jika ada file yang di-push ke folder StudentsPerformance.csv
+on:
+  push:
+    paths:
+      - "dataset_raw/StudentsPerformance.csv"
+
+jobs:
+  auto-prep:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Mengambil Kode dari GitHub
+        uses: actions/checkout@v3
+
+      - name: Menyiapkan Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12.7"
+
+      - name: Memasang Library yang Dibutuhkan
+        run: |
+          pip install pandas scikit-learn
+
+      - name: Menjalankan Script Automate
+        run: |
+          python preprocessing/automate_Selly-Supriyatin.py
+
+      - name: Menyimpan Hasil ke GitHub
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Robot"
+          git add preprocessing/dataset_processed.csv
+          git commit -m "Robot otomatis: dataset baru berhasil diproses!" || echo "Tidak ada data baru yang berubah"
+          git push origin main
