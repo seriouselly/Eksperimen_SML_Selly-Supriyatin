@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import joblib
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
@@ -11,7 +12,7 @@ def run_preprocessing(file_path):
     X = df.drop(columns=['math score'])
     y = df['math score']
     
-    X_train, _, _, _ = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
     numeric_features = ['reading score', 'writing score']
     categorical_features = ['gender', 'race/ethnicity', 'parental level of education', 'lunch', 'test preparation course']
@@ -24,13 +25,12 @@ def run_preprocessing(file_path):
     
     print("Membersihkan dan mengubah data...")
     X_train_processed = preprocessor.fit_transform(X_train)
+    X_test_processed = preprocessor.transform(X_test)
     
-    # Mengubah hasil yang berupa matriks angka kembali menjadi tabel DataFrame
-    # Lalu menyimpannya menjadi file CSV baru agar bisa dilihat hasilnya
-    df_processed = pd.DataFrame(X_train_processed)
-    output_path = os.path.join(os.path.dirname(__file__), 'dataset_processed.csv')
-    df_processed.to_csv(output_path, index=False)
-    print("Berhasil! Data bersih disimpan sebagai 'dataset_processed.csv'")
+    # Simpan data train/test split sebagai joblib (untuk dimuat di modelling.py)
+    output_path = os.path.join(os.path.dirname(__file__), 'dataset_processed.joblib')
+    joblib.dump((X_train_processed, X_test_processed, y_train, y_test), output_path)
+    print("Berhasil! Data bersih disimpan sebagai 'dataset_processed.joblib'")
 
 if __name__ == "__main__":
     # Tentukan path yang benar tergantung di mana script dijalankan
