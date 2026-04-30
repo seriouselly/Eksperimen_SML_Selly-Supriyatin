@@ -5,13 +5,13 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 
 def run_preprocessing(file_path):
-    print("Membaca data mentah...")
+    print("Membaca data dari:", file_path)
     df = pd.read_csv(file_path)
     
     X = df.drop(columns=['math score'])
     y = df['math score']
     
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, _, _, _ = train_test_split(X, y, test_size=0.2, random_state=42)
     
     numeric_features = ['reading score', 'writing score']
     categorical_features = ['gender', 'race/ethnicity', 'parental level of education', 'lunch', 'test preparation course']
